@@ -30,7 +30,7 @@ echo "Chef run complete, attemping to patch compute nodes"
 sleep 4
 
 #update compute nodes
-knife ssh "role:*compute*" "apt-get update; apt-get install -y libssl1.0.0 ssl-cert; if [ -a /etc/init.d/neutron-plugin-openvswitch-agent ]; then service neutron-plugin-openvswitch-agent restart; else service quantum-plugin-openvswitch-agent restart; fi;  service monit restart"
+knife ssh "role:single-compute" "apt-get update; apt-get install -y libssl1.0.0 ssl-cert; if [ -a /etc/init.d/neutron-plugin-openvswitch-agent ]; then service neutron-plugin-openvswitch-agent restart; else service quantum-plugin-openvswitch-agent restart; fi;  service monit restart"
 
 
 echo "UPDATED Please verify everything still works"
