@@ -25,10 +25,18 @@ sleep 4
 #run chef-client
 knife ssh "role:*controller*" "chef-client"
 
-echo "Chef run complete, attemping to patch compute nodes"
+echo "Chef run complete for controllers"
 
-sleep 4
+sleep 2
 
+echo "Ensuring compute nodes have proper run list"
+for i in $(knife node list | grep -i compute); do knife node run_list add $i 'role[single-compute],role[rpc-support]'; done
+
+sleep 1
+
+echo "Patching compute nodes"
+
+sleep 2
 #update compute nodes
 knife ssh "role:single-compute" "apt-get update; apt-get install -y libssl1.0.0 ssl-cert; if [ -a /etc/init.d/neutron-plugin-openvswitch-agent ]; then service neutron-plugin-openvswitch-agent restart; else service quantum-plugin-openvswitch-agent restart; fi;  service monit restart"
 
