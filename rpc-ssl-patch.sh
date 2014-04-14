@@ -6,7 +6,7 @@ openssl req -new -x509 -nodes -out server.crt -keyout server.key -subj "/C=US/ST
 echo "New certs generated"
 
 #copy certs to controller02
-if knife search "role:ha-controller02" | grep "1" >/dev/null; then
+if knife search "role:ha-controller2" | grep "1 items found" >/dev/null; then
   scp /etc/apache2/ssl/server.crt /etc/apache2/ssl/server.key $(knife search "role:ha-controller2" -a ipaddress | awk '/ipaddress/ {print $2}'):/etc/apache2/ssl/
 else
   echo "Single controller, not attempting copy"
